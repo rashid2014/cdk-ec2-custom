@@ -25,15 +25,22 @@ export class CdkEc2CustomStack extends Stack {
       '/project/custom/ec2/sg/id'
     );
 
-    const vpc = ec2.Vpc.fromLookup(
-      this, 'ExistingVpc', {
+    const vpc = ec2.Vpc.fromVpcAttributes(this, 'ExistingVpc', {
       vpcId: vpcId,
+      availabilityZones: [
+        'ca-central-1a',
+        'ca-central-1b',
+        'ca-central-1d'
+      ],
     });
     
-    const subnet1 = ec2.Subnet.fromSubnetId(
+    const subnet1 = ec2.Subnet.fromSubnetAttributes(
       this,
       'ExistingSubnet',
-      subnet1Id
+      {
+        subnetId: subnet1Id,
+        availabilityZone: 'ca-central-1a',
+      }
     );
     
     const ec2SG = ec2.SecurityGroup.fromSecurityGroupId(
